@@ -1,0 +1,57 @@
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to bottom, #003399, #99ccff);
+  }
+  
+  .login-root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .login-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  .login-title {
+    color: #003399;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .login-subtext {
+    color: #003399;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .login-image {
+    width: 70%;
+    margin: 10px 0 20px;
+  }
+  
+  .login-input {
+    margin-bottom: 16px;
+  }
+  
+  .login-button {
+    background-color: #003399 !important;
+    color: white !important;
+    border-radius: 30px !important;
+    font-weight: bold;
+    padding: 10px;
+  }
+  
+  .signup-text {
+    color: #003399;
+    margin-top: 12px;
+  }
+  

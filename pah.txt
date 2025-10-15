@@ -1,0 +1,193 @@
+import React from 'react';
+
+function App() {
+  // State for managing the list of tasks
+  const [tasks, setTasks] = React.useState([]);
+  // State for the filter applied to the tasks
+  const [filter, setFilter] = React.useState('All');
+  // State to manage the loading status
+  const [isLoading, setIsLoading] = React.useState(true);
+  // State to control the visibility of the add task modal
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  // State for the title of a new task being added
+  const [newTaskTitle, setNewTaskTitle] = React.useState('');
+  // State for the priority of a new task
+  const [newTaskPriority, setNewTaskPriority] = React.useState('Low');
+
+  // Initial tasks data
+  const initialTasks = [
+    { id: 1, title: 'Complete React Assignment', priority: 'High', completed: false },
+    { id: 2, title: 'Review Bootstrap Documentation', priority: 'Medium', completed: true },
+    { id: 3, title: 'Debug Lifecycle Methods', priority: 'High', completed: false },
+    { id: 4, title: 'Setup React Dev Tools', priority: 'Low', completed: false },
+  ];
+
+  // Effect to simulate loading data when the component mounts
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setTasks(initialTasks);
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Toggle task completion
+  const handleToggleComplete = (id) => {
+    setTasks(tasks.map((task) =>
+      task.id === id ? { ...task, completed: !task.completed } : task
+    ));
+  };
+
+  // Delete a task
+  const handleDeleteTask = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
+
+  // Add a new task
+  const handleAddTask = () => {
+    if (newTaskTitle.trim() === '') {
+      alert('Task title cannot be empty.');
+      return;
+    }
+    const newTask = {
+      id: Date.now(),
+      title: newTaskTitle,
+      priority: newTaskPriority,
+      completed: false,
+    };
+    setTasks([...tasks, newTask]);
+    setNewTaskTitle('');
+    setNewTaskPriority('Low');
+    setIsModalOpen(false);
+  };
+
+  // Badge color based on priority
+  const getPriorityBadgeClass = (priority) => {
+    switch (priority) {
+      case 'High':
+        return 'bg-primary';
+      case 'Medium':
+        return 'bg-warning';
+      case 'Low':
+        return 'bg-secondary';
+      default:
+        return 'bg-light text-dark';
+    }
+  };
+
+  // Filtered tasks
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === 'All') return true;
+    if (filter === 'Completed') return task.completed;
+    return task.priority === filter;
+  });
+
+  return (
+    <div className="container mt-4">
+      <p>New Lifecycle Task</p>
+      <header className="text-center mb-4">
+        <h1>Task Manager</h1>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
+          <p className="navbar-brand m-0">Filter Tasks</p>
+        </nav>
+      </header>
+
+      <div className="d-flex justify-content-center mb-3">
+        <button className="btn btn-primary me-2" onClick={() => setIsModalOpen(true)}>
+          Add New Task
+        </button>
+      </div>
+
+      <div className="d-flex justify-content-center mb-4">
+        {['All', 'High', 'Medium', 'Low', 'Completed'].map((filterName) => (
+          <button
+            key={filterName}
+            className={`btn ${filter === filterName ? 'btn-dark' : 'btn-outline-dark'} me-2`}
+            onClick={() => setFilter(filterName)}
+          >
+            {filterName}
+          </button>
+        ))}
+      </div>
+
+      {isLoading ? (
+        <div className="d-flex justify-content-center">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      ) : (
+        <ul className="list-group">
+          {filteredTasks.map((task) => (
+            <li key={task.id} className="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <input
+                  className="form-check-input me-2"
+                  type="checkbox"
+                  id={`task-${task.id}`}
+                  checked={task.completed}
+                  onChange={() => handleToggleComplete(task.id)}
+                />
+                <label htmlFor={`task-${task.id}`} style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
+                  {task.title}
+                </label>
+                <span className={`badge ms-2 ${getPriorityBadgeClass(task.priority)}`}>
+                  {task.priority}
+                </span>
+              </div>
+              <button className="btn btn-danger btn-sm" onClick={() => handleDeleteTask(task.id)}>
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* Add Task Modal */}
+      {isModalOpen && (
+        <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Add a New Task</h5>
+                <button type="button" className="btn-close" onClick={() => setIsModalOpen(false)}></button>
+              </div>
+              <div className="modal-body">
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter task title..."
+                    value={newTaskTitle}
+                    onChange={(e) => setNewTaskTitle(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="prioritySelect" className="form-label">Priority</label>
+                  <select
+                    id="prioritySelect"
+                    className="form-select"
+                    value={newTaskPriority}
+                    onChange={(e) => setNewTaskPriority(e.target.value)}
+                  >
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={() => setIsModalOpen(false)}>Close</button>
+                <button type="button" className="btn btn-primary" onClick={handleAddTask}>
+                  Add Task
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;

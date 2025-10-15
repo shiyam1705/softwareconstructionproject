@@ -1,0 +1,394 @@
+/ HTML remove this before executing the code
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reading List Tracker</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+<body>
+<section class="container">
+<header>
+<img src="https://via.placeholder.com/80" alt="Book Icon" class="header-icon">
+<h1>Reading List Tracker</h1>
+<p>Manage your reading adventures easily.</p>
+</header>
+
+<form id="book-form">
+<div class="form-group">
+<label for="title">Book Title</label>
+<input type="text" id="title" placeholder="Enter book title">
+</div>
+<div class="form-group">
+<label for="author">Author</label>
+<input type="text" id="author" placeholder="Enter author's name">
+</div>
+<div class="form-group">
+<label for="status">Status</label>
+<select id="status">
+<option value="">Select Status</option>
+<option value="Read">Read</option>
+<option value="Unread">Unread</option>
+</select>
+</div>
+<div class="form-group">
+<label for="rating">Rating</label>
+<select id="rating">
+<option value="">Select Rating</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+</div>
+<div class="form-group">
+<label for="notes">Notes/Review</label>
+<textarea id="notes" placeholder="Enter your thoughts or a review"></textarea>
+</div>
+<button type="submit">Add Book</button>
+<p class="error-message"></p>
+</form>
+
+<div class="form-group filter-container">
+<label for="filter-status">Filter by Status</label>
+<select id="filter-status">
+<option value="All">All</option>
+<option value="Read">Read</option>
+<option value="Unread">Unread</option>
+</select>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Title</th>
+<th>Author</th>
+<th>Status</th>
+<th>Rating</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody id="book-list">
+</tbody>
+</table>
+</section>
+
+<footer>
+<p>© 2025 ReadingList | All Rights Reserved.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
+
+// CSS -remove this before executing the code
+
+/* Body Styling */
+body {
+font-family: 'Poppins', sans-serif;
+line-height: 1.6;
+margin: 0;
+padding: 0;
+background: linear-gradient(to bottom, #e8f9ef, #a8e6cf);
+display: block;
+min-height: 100vh;
+}
+
+/* Container Styling */
+.container {
+width: 80%;
+max-width: 900px;
+margin: 20px auto;
+padding: 20px;
+background-color: #ffffff;
+border-radius: 2rem;
+box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+display: grid;
+grid-template-columns: 1fr;
+gap: 20px;
+}
+
+/* Header Styling */
+header {
+background-color: rgb(38, 166, 154);
+color: white;
+padding: 15px;
+text-align: center;
+border-radius: 1rem 1rem 0 0;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-icon {
+width: 80px;
+display: block;
+margin: 0 auto 10px;
+}
+
+header h1 {
+margin: 0;
+}
+
+/* Form Styling */
+form {
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+
+.form-group {
+display: flex;
+flex-direction: column;
+}
+
+.form-group label {
+font-weight: bold;
+margin-bottom: 5px;
+}
+
+input[type="text"],
+select,
+textarea {
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 5px;
+transition: all 0.3s ease;
+font-family: 'Poppins', sans-serif;
+}
+
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+outline: none;
+border-color: #26a69a;
+box-shadow: 0 0 5px rgba(38, 166, 154, 0.5);
+}
+
+/* Textarea Styling */
+textarea {
+height: 100px;
+resize: vertical;
+}
+
+/* Submit Button Styling */
+button[type="submit"] {
+background-color: #26a69a;
+color: white;
+padding: 10px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 1rem;
+font-weight: bold;
+transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+background-color: #1e8e7f;
+transform: scale(1.05);
+}
+
+/* Error Message Styling */
+.error-message {
+color: rgb(231, 76, 60);
+font-size: 14px;
+text-align: center;
+margin-top: 10px;
+min-height: 20px;
+}
+
+/* Filter Dropdown Styling */
+.filter-container {
+margin-top: 20px;
+}
+
+#filter-status {
+padding: 10px;
+border-radius: 5px;
+border: 1px solid #b2dfdb;
+transition: all 0.3s ease;
+}
+
+#filter-status:focus,
+#filter-status:hover {
+border-color: #26a69a;
+box-shadow: 0 0 5px rgba(38, 166, 154, 0.3);
+transform: translateY(-2px);
+}
+
+/* Table Styling */
+table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 20px;
+}
+
+thead {
+background-color: #a8e6cf;
+}
+
+th, td {
+padding: 10px;
+text-align: left;
+border-bottom: 1px solid #ddd;
+}
+
+.no-books {
+text-align: center;
+color: gray;
+font-style: italic;
+}
+
+/* Footer Styling */
+footer {
+padding: 15px;
+font-size: 14px;
+color: #555;
+text-align: center;
+border-top: 1px solid #eee;
+margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+.container {
+width: 95%;
+}
+}
+
+@media (max-width: 768px) {
+.form-group {
+padding: 0 5px;
+}
+input[type="text"], select, textarea, button[type="submit"] {
+font-size: 0.95rem;
+}
+}
+
+@media (max-width: 480px) {
+body {
+font-size: 0.9rem;
+}
+.container {
+width: 98%;
+padding: 10px;
+margin: 10px auto;
+}
+th, td {
+padding: 8px;
+}
+}
+
+// Javascript -> remove this before executing the code
+
+document.addEventListener('DOMContentLoaded', () => {
+// DOM Elements
+const bookForm = document.getElementById('book-form');
+const titleInput = document.getElementById('title');
+const authorInput = document.getElementById('author');
+const statusInput = document.getElementById('status');
+const ratingInput = document.getElementById('rating');
+const notesInput = document.getElementById('notes');
+const bookList = document.getElementById('book-list');
+const filterStatus = document.getElementById('filter-status');
+const errorMessage = document.querySelector('.error-message');
+
+// Data Store
+let books = [];
+
+// --- Functions ---
+
+/**
+* Renders the books in the table based on the current filter.
+*/
+const renderBooks = () => {
+bookList.innerHTML = ''; // Clear the current list
+
+const currentFilter = filterStatus.value;
+const filteredBooks = books.filter(book => {
+if (currentFilter === 'All') {
+return true;
+}
+return book.status === currentFilter;
+});
+
+if (filteredBooks.length === 0) {
+const row = document.createElement('tr');
+row.innerHTML = `<td colspan="5" class="no-books">No books found.</td>`;
+bookList.appendChild(row);
+} else {
+filteredBooks.forEach(book => {
+const row = document.createElement('tr');
+row.innerHTML = `
+<td>${book.title}</td>
+<td>${book.author}</td>
+<td>${book.status}</td>
+<td>${book.rating}</td>
+<td>${book.notes}</td>
+`;
+bookList.appendChild(row);
+});
+}
+};
+
+/**
+* Handles the form submission to add a new book.
+*/
+const handleAddBook = (event) => {
+event.preventDefault(); // Prevent page refresh
+
+// Get values from the form
+const title = titleInput.value.trim();
+const author = authorInput.value.trim();
+const status = statusInput.value;
+const rating = ratingInput.value;
+const notes = notesInput.value.trim();
+
+// Form Validation
+if (!title || !author || !status || !rating || !notes) {
+errorMessage.textContent = 'Please fill out all fields.';
+return;
+}
+
+// Clear error message if validation passes
+errorMessage.textContent = '';
+
+// Create a new book object
+const newBook = {
+title,
+author,
+status,
+rating,
+notes
+};
+
+// Add the new book to the array
+books.push(newBook);
+
+// Update the display
+renderBooks();
+
+// Reset the form
+bookForm.reset();
+};
+
+// --- Event Listeners ---
+
+// Listen for form submission
+bookForm.addEventListener('submit', handleAddBook);
+
+// Listen for changes in the filter dropdown
+filterStatus.addEventListener('change', renderBooks);
+
+// --- Initial Render ---
+// Initial call to display "No books found." message
+renderBooks();
+});
+
+
+ 	
+
